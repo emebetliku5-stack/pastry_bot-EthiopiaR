@@ -1,0 +1,19 @@
+services:
+  - type: worker
+    name: pastry-accounting-bot
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: mkdir -p /var/data/exports /var/data/backups && ln -sfn /var/data/pastry_accounting.db pastry_accounting.db && rm -rf exports backups && ln -s /var/data/exports exports && ln -s /var/data/backups backups && python pastry_bot_final_v60_UPDATED.py
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: ADMIN_IDS
+        sync: false
+      - key: BACKUP_HOUR
+        value: "23"
+      - key: REMIND_HOUR
+        value: "8"
+    disk:
+      name: pastry-data
+      mountPath: /var/data
+      sizeGB: 1
